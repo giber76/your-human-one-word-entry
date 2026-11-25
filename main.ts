@@ -9,6 +9,14 @@ import { mkdirSync, writeFileSync } from "node:fs";
 // the whole entry: one word, eleven letters, no excuses.
 const WORD = "Bountyhound";
 
+// Guard the gate: one word, 1–30 chars, no whitespace, or fail loudly
+// instead of submitting something the scorer would refuse.
+if (!/^[^\s]{1,30}$/.test(WORD)) {
+  throw new Error(
+    `entry must be a single word of 1-30 chars, got ${JSON.stringify(WORD)}`,
+  );
+}
+
 const outDir = process.env.MAKEFUN_OUTPUT_DIR ?? "/output";
 mkdirSync(outDir, { recursive: true });
 writeFileSync(`${outDir}/entry.txt`, WORD, "utf8");
